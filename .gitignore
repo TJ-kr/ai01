@@ -1,0 +1,31 @@
+# IDE 설정
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# 운영체제 파일
+.DS_Store
+Thumbs.db
+
+# 로그 파일
+*.log
+
+# 환경 설정 파일
+.env
+.env.local
+.env.*.local
+
+# 임시 파일
+*.tmp
+*.temp
+*~
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Google Apps Script
+.clasp.json 
