@@ -230,22 +230,8 @@ function onFormSubmit(e) {
       replyTo: CONFIG.sender.email
     });
 
-    // 관리자 알림 (대량 주문 또는 기타 제품의 경우)
-    const productInfo = CONFIG.productInfo[item];
-    if (!productInfo || (qty && parseInt(qty) >= 1000)) {
-      const adminSubject = `[로컬러 관리자 알림] ${item} 대량/특별 문의`;
-      const adminBody = `
-특별 주문 접수 알림
-
-- 시간: ${timestamp}
-- 제품: ${item}
-- 수량: ${qty}
-- 고객 이메일: ${email}
-
-* 확인 후 대응 필요`;
-
-      GmailApp.sendEmail(CONFIG.adminEmail, adminSubject, adminBody);
-    }
+    // TODO: 관리자 알림 기능은 향후 별도 구현 예정
+    // 현재는 AdminNotification.gs 파일에 저장되어 있음
 
     // 로그 기록
     logToSheet(sheet, {
