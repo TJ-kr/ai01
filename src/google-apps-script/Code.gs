@@ -90,6 +90,13 @@ function calculateUnitPriceRange(productInfo) {
   return { minUnitPrice, maxUnitPrice };
 }
 
+// 견적 범위 정렬 함수 (작은 숫자 ~ 큰 숫자 순서로)
+function sortPriceRange(minValue, maxValue) {
+  const min = Math.min(minValue, maxValue);
+  const max = Math.max(minValue, maxValue);
+  return { min, max };
+}
+
 // 메일 템플릿
 function getEmailTemplate(item, qty) {
   const productInfo = CONFIG.productInfo[item] || null;
@@ -108,6 +115,10 @@ function getEmailTemplate(item, qty) {
       const minTotal = Math.floor(minUnitPrice * effectiveQty);
       const maxTotal = Math.floor(maxUnitPrice * effectiveQty);
       
+      // 견적 범위 정렬 (작은 숫자 ~ 큰 숫자)
+      const sortedTotal = sortPriceRange(minTotal, maxTotal);
+      const sortedUnitPrice = sortPriceRange(minUnitPrice, maxUnitPrice);
+      
       estimatedTotal = `\n[견적 안내]`;
       
       // 수량이 최소 수량보다 작은 경우
@@ -117,8 +128,8 @@ function getEmailTemplate(item, qty) {
       }
       
       estimatedTotal += `\n\n▶ 예상 견적 범위:`;
-      estimatedTotal += `\n   - 총액: ${minTotal.toLocaleString()}원 ~ ${maxTotal.toLocaleString()}원`;
-      estimatedTotal += `\n   - 개당: ${minUnitPrice.toLocaleString()}원 ~ ${maxUnitPrice.toLocaleString()}원`;
+      estimatedTotal += `\n   - 총액: ${sortedTotal.min.toLocaleString()}원 ~ ${sortedTotal.max.toLocaleString()}원`;
+      estimatedTotal += `\n   - 개당: ${sortedUnitPrice.min.toLocaleString()}원 ~ ${sortedUnitPrice.max.toLocaleString()}원`;
     } else {
       // 가격 정보가 부분적으로만 있는 경우
       estimatedTotal = `\n[견적 안내]`;
@@ -147,7 +158,7 @@ function getEmailTemplate(item, qty) {
 
 저는 생산팀 김윤선 매니저입니다.
 
-문의 주신 ${item} 항목에 대한 견적을 아래와 같이 안내드립니다.
+문의 주신 ${item}에 대한 견적을 아래와 같이 안내드립니다.
 
 견적 수량: ${qty}개${estimatedTotal}
 
@@ -155,7 +166,8 @@ function getEmailTemplate(item, qty) {
 상세 견적서를 회신드리겠습니다.
 링크: https://m.site.naver.com/1KaVA 
 
-문의 사항이 있으실 경우, 아래 연락처로 소통이 가능합니다.
+문의 사항이 있으실 경우, 본 메일에 답장해주세요. 아래 메일로 자동으로 연결됩니다.
+담당자: 생산팀 김윤선 매니저
 이메일: product@locolor.kr
 연락처: 010-4614-6019
 *운영시간: 평일 10-19시 (점심 12-13시, 주말 및 공휴일 휴무)
