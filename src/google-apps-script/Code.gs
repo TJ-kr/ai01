@@ -9,7 +9,7 @@ const CONFIG = {
   productInfo: {
     "인형": {
       minQuantity: 500,
-      baseQuantity: 2000,  // 기준 최대 수량
+      baseQuantity: 2000,
       totalPriceRange: { 
         min: 6596000,  // 500개 기준
         max: 20424000  // 2000개 기준
@@ -17,7 +17,7 @@ const CONFIG = {
     },
     "인형 키링": {
       minQuantity: 500,
-      baseQuantity: 1000,  // 기준 최대 수량
+      baseQuantity: 1000,
       totalPriceRange: {
         min: 4600000,  // 500개 기준
         max: 7753054   // 1000개 기준
@@ -66,28 +66,39 @@ const CONFIG = {
   }
 };
 
-// 가격 계산 헬퍼 함수
-function calculatePrice(qty, minQty, baseQty, minPrice, maxPrice) {
-  if (!minPrice || !maxPrice) return null;
+// 견적 계산 함수
+function calculateQuote(item, qty) {
+  const productInfo = CONFIG.productInfo[item];
   
-  // 수량당 가격 증가율 계산
-  const priceIncreaseRate = (maxPrice - minPrice) / (baseQty - minQty);
+  if (!productInfo) {
+    return {
+      type: 'custom',
+      message: '해당 내용은 확인 후 회신하겠습니다.'
+    };
+  }
   
-  // 실제 수량에 따른 가격 계산
-  const estimatedPrice = minPrice + (priceIncreaseRate * (qty - minQty));
-  return Math.floor(estimatedPrice);
-}
-
-// 단가 범위 계산 함수
-function calculateUnitPriceRange(productInfo) {
   const { minQuantity, baseQuantity, totalPriceRange } = productInfo;
+  const qtyNum = parseInt(qty) || 0;
   
-  if (!totalPriceRange.min || !totalPriceRange.max || !baseQuantity) return null;
+  // 최소 수량 미달인 경우
+  if (qtyNum < minQuantity) {
+    return {
+      type: 'below_minimum',
+      minQuantity: minQuantity,
+      minPrice: totalPriceRange.min,
+      maxPrice: totalPriceRange.max,
+      minQtyForMaxPrice: baseQuantity
+    };
+  }
   
-  const minUnitPrice = Math.floor(totalPriceRange.max / baseQuantity); // 더 많은 수량의 단가가 최소 단가
-  const maxUnitPrice = Math.floor(totalPriceRange.min / minQuantity); // 더 적은 수량의 단가가 최대 단가
-  
-  return { minUnitPrice, maxUnitPrice };
+  // 최소 수량 이상인 경우
+  return {
+    type: 'within_range',
+    minPrice: totalPriceRange.min,
+    maxPrice: totalPriceRange.max,
+    minQtyForMinPrice: minQuantity,
+    minQtyForMaxPrice: baseQuantity
+  };
 }
 
 // 견적 범위 정렬 함수 (작은 숫자 ~ 큰 숫자 순서로)
@@ -99,54 +110,32 @@ function sortPriceRange(minValue, maxValue) {
 
 // 메일 템플릿
 function getEmailTemplate(item, qty) {
-  const productInfo = CONFIG.productInfo[item] || null;
-  const isStandardProduct = !!productInfo;
+  const quote = calculateQuote(item, qty);
   
   let estimatedTotal = '';
-  if (productInfo) {
-    const { minQuantity, baseQuantity, totalPriceRange } = productInfo;
-    const unitPriceRange = calculateUnitPriceRange(productInfo);
-    
-    // 견적 계산이 가능한 경우
-    if (unitPriceRange) {
-      const { minUnitPrice, maxUnitPrice } = unitPriceRange;
-      const effectiveQty = qty < minQuantity ? minQuantity : qty;
-      
-      const minTotal = Math.floor(minUnitPrice * effectiveQty);
-      const maxTotal = Math.floor(maxUnitPrice * effectiveQty);
-      
-      // 견적 범위 정렬 (작은 숫자 ~ 큰 숫자)
-      const sortedTotal = sortPriceRange(minTotal, maxTotal);
-      const sortedUnitPrice = sortPriceRange(minUnitPrice, maxUnitPrice);
-      
-      estimatedTotal = `\n[견적 안내]`;
-      
-      // 수량이 최소 수량보다 작은 경우
-      if (qty < minQuantity) {
-        estimatedTotal += `\n※ 최소 주문 수량은 ${minQuantity}개입니다.`;
-        estimatedTotal += `\n※ 아래 견적은 최소 주문 수량 기준으로 계산된 금액입니다.`;
-      }
-      
-      estimatedTotal += `\n\n▶ 예상 견적 범위:`;
-      estimatedTotal += `\n   - 총액: ${sortedTotal.min.toLocaleString()}원 ~ ${sortedTotal.max.toLocaleString()}원`;
-      estimatedTotal += `\n   - 개당: ${sortedUnitPrice.min.toLocaleString()}원 ~ ${sortedUnitPrice.max.toLocaleString()}원`;
-    } else {
-      // 가격 정보가 부분적으로만 있는 경우
-      estimatedTotal = `\n[견적 안내]`;
-      if (totalPriceRange.min) {
-        const minUnitPrice = Math.floor(totalPriceRange.min / minQuantity);
-        estimatedTotal += `\n▶ ${minQuantity}개 기준:`;
-        estimatedTotal += `\n   - 총액: ${totalPriceRange.min.toLocaleString()}원`;
-        estimatedTotal += `\n   - 개당: ${minUnitPrice.toLocaleString()}원`;
-      }
-      if (baseQuantity && totalPriceRange.max) {
-        const maxUnitPrice = Math.floor(totalPriceRange.max / baseQuantity);
-        estimatedTotal += `\n\n▶ ${baseQuantity}개 기준:`;
-        estimatedTotal += `\n   - 총액: ${totalPriceRange.max.toLocaleString()}원`;
-        estimatedTotal += `\n   - 개당: ${maxUnitPrice.toLocaleString()}원`;
-      }
-    }
-    
+  
+  if (quote.type === 'custom') {
+    // 기타 항목인 경우
+    estimatedTotal = `\n\n${quote.message}`;
+  } else if (quote.type === 'below_minimum') {
+    // 최소 수량 미달인 경우
+    const sortedPrices = sortPriceRange(quote.minPrice, quote.maxPrice);
+    estimatedTotal = `\n[견적 안내]`;
+    estimatedTotal += `\n※ 최소 주문 수량은 ${quote.minQuantity}개입니다.`;
+    estimatedTotal += `\n※ 아래 견적은 최소 주문 수량 기준으로 계산된 금액입니다.`;
+    estimatedTotal += `\n\n▶ 견적 범위:`;
+    estimatedTotal += `\n   - 총액: ${sortedPrices.min.toLocaleString()}원 ~ ${sortedPrices.max.toLocaleString()}원`;
+    estimatedTotal += `\n   - 기준: ${quote.minQuantity}개 ~ ${quote.minQtyForMaxPrice}개`;
+  } else if (quote.type === 'within_range') {
+    // 최소 수량 이상인 경우
+    const sortedPrices = sortPriceRange(quote.minPrice, quote.maxPrice);
+    estimatedTotal = `\n[견적 안내]`;
+    estimatedTotal += `\n\n▶ 견적 범위:`;
+    estimatedTotal += `\n   - 총액: ${sortedPrices.min.toLocaleString()}원 ~ ${sortedPrices.max.toLocaleString()}원`;
+    estimatedTotal += `\n   - 기준: ${quote.minQtyForMinPrice}개 ~ ${quote.minQtyForMaxPrice}개`;
+  }
+  
+  if (quote.type !== 'custom') {
     estimatedTotal += `\n\n※ 실제 견적은 상세 상담 후 확정됩니다.`;
     estimatedTotal += `\n※ 수량과 옵션에 따라 견적이 변동될 수 있습니다.`;
     estimatedTotal += `\n※ 위 금액은 부가세 제외 금액입니다.`;
