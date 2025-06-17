@@ -138,6 +138,7 @@ function getEmailTemplate(item, qty) {
     
     estimatedTotal += `\n\n※ 실제 견적은 상세 상담 후 확정됩니다.`;
     estimatedTotal += `\n※ 수량과 옵션에 따라 견적이 변동될 수 있습니다.`;
+    estimatedTotal += `\n※ 위 금액은 부가세 제외 금액입니다.`;
   }
 
   return `안녕하세요. 
