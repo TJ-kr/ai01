@@ -71,7 +71,7 @@
 ## ⚙️ 시스템 구성
 
 ### 구글 폼
-- **폼 링크**: [https://forms.gle/yJssHaz9tdHVCbcv5](https://forms.gle/yJssHaz9tdHVCbcv5)
+- **폼 링크**: [YOUR_FORM_URL](YOUR_FORM_URL)
 - **수집 항목**:
   - 이메일 (필수)
   - 견적 희망 제품 (필수)
@@ -79,14 +79,14 @@
   - 개인정보 동의 (필수)
 
 ### 스프레드시트
-- **시트 ID**: `1-Q0L3cxDubrkYKxYAAc_FZgEfhkYbHHjowSsuQMjGK4`
+- **시트 ID**: `YOUR_SPREADSHEET_ID`
 - **시트 구성**:
   - 메인 시트: 폼 응답 데이터
   - 로그 시트: 처리 로그 (자동 생성)
 
 ### 이메일 발송
-- **발신자**: product@locolor.kr (로컬러 생산팀)
-- **관리자**: locolorinc@gmail.com
+- **발신자**: YOUR_SENDER_EMAIL (로컬러 생산팀)
+- **관리자**: YOUR_ADMIN_EMAIL
 - **발송 시스템**: Gmail API
 
 ## 📊 제품별 견적 기준
@@ -170,8 +170,8 @@
 
 ## 📞 문의
 
-- **이메일**: product@locolor.kr
-- **연락처**: 010-4614-6019
+- **이메일**: YOUR_SENDER_EMAIL
+- **연락처**: YOUR_PHONE_NUMBER
 - **운영시간**: 평일 10-19시 (점심 12-13시, 주말 및 공휴일 휴무)
 
 ---

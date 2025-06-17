@@ -1,10 +1,10 @@
 // 설정값
 const CONFIG = {
-  spreadsheetId: '1-Q0L3cxDubrkYKxYAAc_FZgEfhkYbHHjowSsuQMjGK4',
-  adminEmail: 'locolorinc@gmail.com',
+  spreadsheetId: 'YOUR_SPREADSHEET_ID',
+  adminEmail: 'YOUR_ADMIN_EMAIL',
   sender: {
     name: '로컬러 생산팀',
-    email: 'product@locolor.kr'
+    email: 'YOUR_SENDER_EMAIL'
   },
   productInfo: {
     "인형": {
@@ -151,8 +151,8 @@ function getEmailTemplate(items, qty) {
 
 문의 사항이 있으실 경우, 본 메일에 답장해주세요. 아래 메일로 자동으로 연결됩니다.
 담당자: 생산팀 김윤선 매니저
-이메일: product@locolor.kr
-연락처: 010-4614-6019
+이메일: YOUR_SENDER_EMAIL
+연락처: YOUR_PHONE_NUMBER
 *운영시간: 평일 10-19시 (점심 12-13시, 주말 및 공휴일 휴무)
 
 오늘도 좋은 하루 보내시길 바랍니다.
@@ -202,12 +202,12 @@ function getEmailTemplate(items, qty) {
 
 보다 상세한 견적을 원하실 경우, 아래 구글폼을 작성해주세요.
 상세 견적서를 회신드리겠습니다.
-링크: https://m.site.naver.com/1KaVA 
+링크: YOUR_DETAILED_QUOTE_URL
 
 문의 사항이 있으실 경우, 본 메일에 답장해주세요. 아래 메일로 자동으로 연결됩니다.
 담당자: 생산팀 김윤선 매니저
-이메일: product@locolor.kr
-연락처: 010-4614-6019
+이메일: YOUR_SENDER_EMAIL
+연락처: YOUR_PHONE_NUMBER
 *운영시간: 평일 10-19시 (점심 12-13시, 주말 및 공휴일 휴무)
 
 오늘도 좋은 하루 보내시길 바랍니다. 

@@ -2,7 +2,7 @@
 // 향후 구현 예정 기능
 
 const ADMIN_CONFIG = {
-  adminEmail: 'locolorinc@gmail.com',
+  adminEmail: 'YOUR_ADMIN_EMAIL',
   notificationThreshold: 1000, // 대량 주문 기준 수량
   enableNotifications: false   // 현재 비활성화
 };

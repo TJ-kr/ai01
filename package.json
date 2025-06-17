@@ -19,7 +19,7 @@
   ],
   "author": {
     "name": "로컬러 개발팀",
-    "email": "product@locolor.kr"
+    "email": "YOUR_SENDER_EMAIL"
   },
   "license": "MIT",
   "repository": {
@@ -36,9 +36,9 @@
   "dependencies": {},
   "devDependencies": {},
   "config": {
-    "spreadsheetId": "1-Q0L3cxDubrkYKxYAAc_FZgEfhkYbHHjowSsuQMjGK4",
-    "formUrl": "https://forms.gle/yJssHaz9tdHVCbcv5",
-    "adminEmail": "locolorinc@gmail.com",
-    "senderEmail": "product@locolor.kr"
+    "spreadsheetId": "YOUR_SPREADSHEET_ID",
+    "formUrl": "YOUR_FORM_URL",
+    "adminEmail": "YOUR_ADMIN_EMAIL",
+    "senderEmail": "YOUR_SENDER_EMAIL"
   }
 } 
