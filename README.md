@@ -1,4 +1,4 @@
-# Locolor 자동 견적 시스템
+# YOUR_COMPANY_NAME 자동 견적 시스템
 
 구글 폼을 통해 접수된 견적 문의를 자동으로 처리하고 이메일을 발송하는 시스템입니다.
 
@@ -11,6 +11,12 @@
 - [제품별 견적 기준](#제품별-견적-기준)
 - [설치 및 설정](#설치-및-설정)
 - [향후 계획](#향후-계획)
+
+## 📋 개요
+
+- **개발**: YOUR_COMPANY_NAME 개발팀
+- **담당자**: YOUR_MANAGER_NAME 매니저
+- **시스템**: Google Apps Script 기반 자동화
 
 ## ✨ 기능
 
@@ -85,7 +91,7 @@
   - 로그 시트: 처리 로그 (자동 생성)
 
 ### 이메일 발송
-- **발신자**: YOUR_SENDER_EMAIL (로컬러 생산팀)
+- **발신자**: YOUR_SENDER_EMAIL (YOUR_COMPANY_NAME 생산팀)
 - **관리자**: YOUR_ADMIN_EMAIL
 - **발송 시스템**: Gmail API
 

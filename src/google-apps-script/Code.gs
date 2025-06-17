@@ -3,7 +3,7 @@ const CONFIG = {
   spreadsheetId: 'YOUR_SPREADSHEET_ID',
   adminEmail: 'YOUR_ADMIN_EMAIL',
   sender: {
-    name: '로컬러 생산팀',
+    name: 'YOUR_COMPANY_NAME 생산팀',
     email: 'YOUR_SENDER_EMAIL'
   },
   productInfo: {
@@ -141,16 +141,16 @@ function getEmailTemplate(items, qty) {
       // 기타 항목만 있는 경우 - 별도 템플릿 사용
       const customItemText = customItems.join(', ');
       return `안녕하세요.
-로컬에 컬러를 더하는 주식회사 로컬러입니다.
+YOUR_COMPANY_NAME에 컬러를 더하는 주식회사 YOUR_COMPANY_NAME입니다.
 견적 문의해주셔서 감사합니다.
 
-저는 생산팀 김윤선 매니저입니다.
+저는 생산팀 YOUR_MANAGER_NAME 매니저입니다.
 
 문의주신 ${customItemText}은 별도로 견적을 확인하여 회신드리겠습니다.
 연락 가능한 번호를 회신해주세요.
 
 문의 사항이 있으실 경우, 본 메일에 답장해주세요. 아래 메일로 자동으로 연결됩니다.
-담당자: 생산팀 김윤선 매니저
+담당자: 생산팀 YOUR_MANAGER_NAME 매니저
 이메일: YOUR_SENDER_EMAIL
 연락처: YOUR_PHONE_NUMBER
 *운영시간: 평일 10-19시 (점심 12-13시, 주말 및 공휴일 휴무)
@@ -158,7 +158,7 @@ function getEmailTemplate(items, qty) {
 오늘도 좋은 하루 보내시길 바랍니다.
 감사합니다.
 
-누구나 갖고 싶은 굿즈를 만듭니다. 로컬러`;
+누구나 갖고 싶은 굿즈를 만듭니다. YOUR_COMPANY_NAME`;
     } else {
       // 기타 항목과 일반 제품이 함께 있는 경우
       estimatedTotal += `\n\n※ ${customItems.join(', ')}은 별도로 견적을 확인하여 회신드리겠습니다.`;
@@ -191,10 +191,10 @@ function getEmailTemplate(items, qty) {
   }
 
   return `안녕하세요. 
-로컬에 컬러를 더하는 주식회사 로컬러입니다.
+YOUR_COMPANY_NAME에 컬러를 더하는 주식회사 YOUR_COMPANY_NAME입니다.
 견적 문의해주셔서 감사합니다.
 
-저는 생산팀 김윤선 매니저입니다.
+저는 생산팀 YOUR_MANAGER_NAME 매니저입니다.
 
 문의 주신 ${itemArray.join(', ')}에 대한 견적을 아래와 같이 안내드립니다.
 
@@ -205,7 +205,7 @@ function getEmailTemplate(items, qty) {
 링크: YOUR_DETAILED_QUOTE_URL
 
 문의 사항이 있으실 경우, 본 메일에 답장해주세요. 아래 메일로 자동으로 연결됩니다.
-담당자: 생산팀 김윤선 매니저
+담당자: 생산팀 YOUR_MANAGER_NAME 매니저
 이메일: YOUR_SENDER_EMAIL
 연락처: YOUR_PHONE_NUMBER
 *운영시간: 평일 10-19시 (점심 12-13시, 주말 및 공휴일 휴무)
@@ -213,7 +213,7 @@ function getEmailTemplate(items, qty) {
 오늘도 좋은 하루 보내시길 바랍니다. 
 감사합니다.
 
-누구나 갖고 싶은 굿즈를 만듭니다. 로컬러`;
+누구나 갖고 싶은 굿즈를 만듭니다. YOUR_COMPANY_NAME`;
 }
 
 // 로깅 함수

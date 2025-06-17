@@ -53,6 +53,7 @@
 - 스프레드시트 ID: YOUR_SPREADSHEET_ID
 - 이메일 발송 시스템 (YOUR_SENDER_EMAIL)
 - 관리자 알림 시스템 (YOUR_ADMIN_EMAIL)
+- YOUR_COMPANY_NAME 브랜딩 적용
 
 ---
 
