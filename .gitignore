@@ -28,4 +28,29 @@ yarn-debug.log*
 yarn-error.log*
 
 # Google Apps Script
-.clasp.json 
+.clasp.json
+.claspignore
+
+# 보안 관련 파일
+secrets.json
+credentials.json
+token.json
+
+# 백업 파일
+*.bak
+*.backup
+
+# 테스트 파일
+test/
+tests/
+*.test.js
+*.spec.js
+
+# 빌드 파일
+dist/
+build/
+out/
+
+# 캐시 파일
+.cache/
+.temp/ 

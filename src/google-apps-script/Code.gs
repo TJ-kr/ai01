@@ -15,15 +15,23 @@ const CONFIG = {
         max: 20424000  // 2000개 기준
       }
     },
-    "인형키링": {
+    "인형 키링": {
       minQuantity: 500,
-      baseQuantity: null,  // 기준 최대 수량 미정
+      baseQuantity: 1000,  // 기준 최대 수량
       totalPriceRange: {
         min: 4600000,  // 500개 기준
-        max: null      // 최대 가격 미정
+        max: 7753054   // 1000개 기준
       }
     },
-    "금속뱃지": {
+    "아크릴 키링": {
+      minQuantity: 500,
+      baseQuantity: 1000,
+      totalPriceRange: {
+        min: 2000000,
+        max: 3500000
+      }
+    },
+    "금속 뱃지": {
       minQuantity: 500,
       baseQuantity: 2000,
       totalPriceRange: {
@@ -40,14 +48,14 @@ const CONFIG = {
       }
     },
     "스티커": {
-      minQuantity: 500,
-      baseQuantity: 2000,
+      minQuantity: 300,
+      baseQuantity: 3000,
       totalPriceRange: {
-        min: null,     // 최소 가격 미정
-        max: 1320000   // 2000개 기준
+        min: 231000,     // 300장 기준 (리무버블)
+        max: 15100000    // 3000장 기준
       }
     },
-    "차량번호판": {
+    "차량 번호판": {
       minQuantity: 500,
       baseQuantity: 1500,
       totalPriceRange: {
@@ -173,6 +181,12 @@ function logToSheet(sheet, logData) {
 
 // 메인 함수
 function onFormSubmit(e) {
+  // 변수들을 함수 시작 부분에서 선언하여 스코프 문제 해결
+  let email = '';
+  let item = '';
+  let qty = '';
+  let timestamp = '';
+  
   try {
     console.log('함수 시작');
     
@@ -186,10 +200,12 @@ function onFormSubmit(e) {
     const values = sheet.getRange(lastRow, 1, 1, lastColumn).getValues()[0];
     
     // 데이터 매핑
-    const timestamp = values[0] || '';
-    const email = values[1] || '';
-    const item = values[2] || '';
-    const qty = values[3] || '';
+    timestamp = values[0] || '';
+    email = values[1] || '';
+    item = values[2] || '';
+    qty = values[3] || '';
+    
+    console.log('매핑된 데이터:', { timestamp, email, item, qty });
     
     // 데이터 검증
     if (!email || !item) {
@@ -208,9 +224,9 @@ function onFormSubmit(e) {
     const subject = `[로컬러] ${item} 견적 문의에 대한 답변입니다.`;
     const body = getEmailTemplate(item, qty);
 
+    // Gmail 발송 옵션 수정 - from 옵션 제거
     GmailApp.sendEmail(email, subject, body, {
       name: CONFIG.sender.name,
-      from: CONFIG.sender.email,
       replyTo: CONFIG.sender.email
     });
 
@@ -245,20 +261,31 @@ function onFormSubmit(e) {
   } catch (error) {
     console.error('실행 중 오류 발생: ' + error.toString());
     
-    // 오류 로그 기록
-    logToSheet(sheet, {
-      email: email || 'UNKNOWN',
-      item: item || 'UNKNOWN',
-      quantity: qty || 'UNKNOWN',
-      status: 'ERROR',
-      message: error.toString()
-    });
+    // 오류 로그 기록 - 변수 스코프 문제 해결됨
+    try {
+      const spreadsheet = SpreadsheetApp.openById(CONFIG.spreadsheetId);
+      const sheet = spreadsheet.getSheets()[0];
+      
+      logToSheet(sheet, {
+        email: email || 'UNKNOWN',
+        item: item || 'UNKNOWN',
+        quantity: qty || 'UNKNOWN',
+        status: 'ERROR',
+        message: error.toString()
+      });
+    } catch (logError) {
+      console.error('로그 기록 실패: ' + logError.toString());
+    }
     
     // 관리자에게 오류 알림
-    GmailApp.sendEmail(
-      CONFIG.adminEmail,
-      '[로컬러 시스템 오류] 견적 자동 발송 실패',
-      '오류 발생: ' + error.toString() + '\n\n' + error.stack
-    );
+    try {
+      GmailApp.sendEmail(
+        CONFIG.adminEmail,
+        '[로컬러 시스템 오류] 견적 자동 발송 실패',
+        '오류 발생: ' + error.toString() + '\n\n' + error.stack
+      );
+    } catch (emailError) {
+      console.error('관리자 알림 발송 실패: ' + emailError.toString());
+    }
   }
 } 

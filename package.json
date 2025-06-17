@@ -1,0 +1,44 @@
+{
+  "name": "locolor-auto-quote-system",
+  "version": "2.1.0",
+  "description": "구글 폼을 통한 자동 견적 시스템 - 로컬러",
+  "main": "src/google-apps-script/Code.gs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "echo \"Deploy to Google Apps Script\"",
+    "version": "echo \"Current version: $npm_package_version\""
+  },
+  "keywords": [
+    "google-apps-script",
+    "automation",
+    "email",
+    "quote",
+    "locolor",
+    "form",
+    "spreadsheet"
+  ],
+  "author": {
+    "name": "로컬러 개발팀",
+    "email": "product@locolor.kr"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/locolor/auto-quote-system.git"
+  },
+  "bugs": {
+    "url": "https://github.com/locolor/auto-quote-system/issues"
+  },
+  "homepage": "https://github.com/locolor/auto-quote-system#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "config": {
+    "spreadsheetId": "1-Q0L3cxDubrkYKxYAAc_FZgEfhkYbHHjowSsuQMjGK4",
+    "formUrl": "https://forms.gle/yJssHaz9tdHVCbcv5",
+    "adminEmail": "locolorinc@gmail.com",
+    "senderEmail": "product@locolor.kr"
+  }
+} 
